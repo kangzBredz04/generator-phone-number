@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generator Nomor HP Dummy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary-blue: #4285f4;
+        --secondary-blue: #64b5f6;
+        --primary-red: #ea4335;
+        --secondary-red: #ff8a80;
+        --accent-color: #34a853;
+        --text-color: #333;
+        --light-text: #666;
+        --background: #f8f9fa;
+        --card-bg: #fff;
+        --warning-bg: #fff8e1;
+        --warning-text: #f57c00;
+      }
+
+      body {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--secondary-blue),
+          var(--primary-red)
+        );
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 500px;
+        padding: 25px;
+        text-align: center;
+      }
+
+      .header {
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .description {
+        color: var(--light-text);
+        margin-bottom: 20px;
+        font-size: 1rem;
+      }
+
+      .platform-selector {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .platform {
+        padding: 10px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 80px;
+        text-align: center;
+        background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+      }
+
+      .platform:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .platform.active {
+        border-color: var(--primary-blue);
+        background: linear-gradient(
+          to bottom,
+          var(--primary-blue),
+          var(--secondary-blue)
+        );
+        color: white;
+      }
+
+      .generate-btn {
+        background: linear-gradient(
+          to right,
+          var(--primary-blue),
+          var(--primary-red)
+        );
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 15px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .generate-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        background: linear-gradient(
+          to right,
+          var(--primary-red),
+          var(--primary-blue)
+        );
+      }
+
+      .result {
+        margin-top: 20px;
+        padding: 20px;
+        background: linear-gradient(to bottom, #e3f2fd, #ffebee);
+        border-radius: 10px;
+        display: none;
+        border: 2px dashed var(--primary-blue);
+      }
+
+      .result-title {
+        font-weight: 600;
+        color: var(--primary-blue);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .phone-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-red);
+        margin: 15px 0;
+        letter-spacing: 1.5px;
+        word-break: break-all;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .disclaimer {
+        margin-top: 25px;
+        padding: 15px;
+        background-color: var(--warning-bg);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        color: var(--warning-text);
+        text-align: left;
+        border-left: 4px solid var(--warning-text);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .copy-btn,
+      .share-btn {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .share-btn {
+        background-color: var(--primary-blue);
+      }
+
+      .copy-btn:hover {
+        background-color: #2e7d32;
+        transform: translateY(-2px);
+      }
+
+      .share-btn:hover {
+        background-color: #1c6de8;
+        transform: translateY(-2px);
+      }
+
+      .history {
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .history h3 {
+        margin-bottom: 10px;
+        color: var(--primary-blue);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .history-list {
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #bbdefb;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #e3f2fd;
+      }
+
+      .history-item {
+        padding: 8px;
+        border-bottom: 1px solid #bbdefb;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+      }
+
+      .history-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .platform {
+          padding: 8px 12px;
+          font-size: 0.85rem;
+          min-width: 70px;
+        }
+
+        .generate-btn {
+          padding: 12px 20px;
+          font-size: 1rem;
+        }
+
+        .phone-number {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 15px;
+          background: linear-gradient(
+            to bottom,
+            var(--primary-blue),
+            var(--secondary-blue),
+            var(--primary-red)
+          );
+        }
+
+        .container {
+          padding: 15px;
+          border-radius: 12px;
+        }
+
+        h1 {
+          font-size: 1.3rem;
+          margin-bottom: 10px;
+        }
+
+        .description {
+          font-size: 0.9rem;
+          margin-bottom: 15px;
+        }
+
+        .platform {
+          padding: 6px 10px;
+          font-size: 0.8rem;
+          min-width: 60px;
+        }
+
+        .generate-btn {
+          padding: 10px 15px;
+          font-size: 0.95rem;
+        }
+
+        .phone-number {
+          font-size: 1.1rem;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .copy-btn,
+        .share-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .history-item {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1><i class="fas fa-mobile-alt"></i> Generator Nomor HP Dummy</h1>
+        <p class="description">
+          Hasilkan nomor HP dummy untuk keperluan testing transaksi OVO, GoPay,
+          dan LinkAja
+        </p>
+      </div>
+
+      <div class="platform-selector">
+        <div class="platform active" data-platform="all">
+          <i class="fas fa-globe"></i> Semua
+        </div>
+        <div class="platform" data-platform="ovo">
+          <i class="fas fa-wallet"></i> OVO
+        </div>
+        <div class="platform" data-platform="gopay">
+          <i class="fas fa-money-bill-wave"></i> GoPay
+        </div>
+        <div class="platform" data-platform="linkaja">
+          <i class="fas fa-qrcode"></i> LinkAja
+        </div>
+      </div>
+
+      <button class="generate-btn" id="generateBtn">
+        <i class="fas fa-bolt"></i> Generate Nomor
+      </button>
+
+      <div class="result" id="result">
+        <div class="result-title">
+          <i class="fas fa-phone"></i> Nomor HP Dummy:
+        </div>
+        <div class="phone-number" id="phoneNumber">-</div>
+        <div class="action-buttons">
+          <button class="copy-btn" id="copyBtn">
+            <i class="fas fa-copy"></i> Salin Nomor
+          </button>
+          <button class="share-btn" id="shareBtn">
+            <i class="fas fa-share-alt"></i> Bagikan
+          </button>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong><i class="fas fa-exclamation-circle"></i> Disclaimer:</strong>
+        Nomor yang dihasilkan adalah nomor dummy (palsu) dan hanya untuk
+        keperluan testing/pengembangan. Tidak dapat digunakan untuk transaksi
+        nyata atau registrasi akun.
+      </div>
+
+      <div class="history">
+        <h3><i class="fas fa-history"></i> Riwayat Generate</h3>
+        <div class="history-list" id="historyList">
+          <!-- Riwayat akan ditambahkan di sini -->
+          <div class="history-item empty-history">
+            Belum ada riwayat generate
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const generateBtn = document.getElementById("generateBtn");
+        const resultDiv = document.getElementById("result");
+        const phoneNumberDiv = document.getElementById("phoneNumber");
+        const copyBtn = document.getElementById("copyBtn");
+        const shareBtn = document.getElementById("shareBtn");
+        const platforms = document.querySelectorAll(".platform");
+        const historyList = document.getElementById("historyList");
+
+        let selectedPlatform = "all";
+        let generatedNumbers = [];
+
+        // Event listener untuk platform selection
+        platforms.forEach((platform) => {
+          platform.addEventListener("click", function () {
+            platforms.forEach((p) => p.classList.remove("active"));
+            this.classList.add("active");
+            selectedPlatform = this.getAttribute("data-platform");
+          });
+        });
+
+        // Format nomor HP Indonesia
+        function formatPhoneNumber(number) {
+          return number.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
+        }
+
+        // Generate nomor HP dummy
+        function generateDummyNumber() {
+          // Format nomor Indonesia: 08xx-xxxx-xxxx
+          const prefix = "08";
+          // Random 10 digit angka
+          let randomNumber = "";
+          for (let i = 0; i < 10; i++) {
+            randomNumber += Math.floor(Math.random() * 10);
+          }
+
+          return prefix + randomNumber;
+        }
+
+        // Generate nomor ketika tombol diklik
+        generateBtn.addEventListener("click", function () {
+          const dummyNumber = generateDummyNumber();
+          const formattedNumber = formatPhoneNumber(dummyNumber);
+
+          phoneNumberDiv.textContent = formattedNumber;
+          resultDiv.style.display = "block";
+
+          // Tambahkan animasi
+          phoneNumberDiv.style.animation = "none";
+          setTimeout(() => {
+            phoneNumberDiv.style.animation = "pulse 0.5s";
+          }, 10);
+
+          // Tambahkan ke riwayat
+          addToHistory(formattedNumber, selectedPlatform);
+        });
+
+        // Salin nomor ke clipboard
+        copyBtn.addEventListener("click", function () {
+          const tempTextArea = document.createElement("textarea");
+          tempTextArea.value = phoneNumberDiv.textContent.replace(/-/g, "");
+          document.body.appendChild(tempTextArea);
+          tempTextArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempTextArea);
+
+          // Ubah teks tombol sementara
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+          setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+          }, 2000);
+        });
+
+        // Bagikan nomor
+        shareBtn.addEventListener("click", function () {
+          if (navigator.share) {
+            navigator
+              .share({
+                title: "Nomor HP Dummy",
+                text:
+                  "Saya menghasilkan nomor HP dummy untuk testing: " +
+                  phoneNumberDiv.textContent,
+                url: window.location.href,
+              })
+              .catch(console.error);
+          } else {
+            alert(
+              "Fitur share tidak didukung di browser ini. Silakan salin nomor secara manual."
+            );
+          }
+        });
+
+        // Tambahkan ke riwayat
+        function addToHistory(number, platform) {
+          // Hapus placeholder jika ada
+          const emptyHistory = document.querySelector(".empty-history");
+          if (emptyHistory) {
+            emptyHistory.remove();
+          }
+
+          generatedNumbers.unshift({ number, platform, time: new Date() });
+
+          // Batasi riwayat hingga 5 item
+          if (generatedNumbers.length > 5) {
+            generatedNumbers.pop();
+          }
+
+          updateHistoryDisplay();
+        }
+
+        // Update tampilan riwayat
+        function updateHistoryDisplay() {
+          historyList.innerHTML = "";
+
+          generatedNumbers.forEach((item) => {
+            const historyItem = document.createElement("div");
+            historyItem.className = "history-item";
+
+            const timeString = item.time.toLocaleTimeString();
+            const platformMap = {
+              all: "Semua",
+              ovo: "OVO",
+              gopay: "GoPay",
+              linkaja: "LinkAja",
+            };
+
+            historyItem.innerHTML = `
+                        <span>${item.number}</span>
+                        <span>${
+                          platformMap[item.platform]
+                        } - ${timeString}</span>
+                    `;
+
+            historyList.appendChild(historyItem);
+          });
+        }
+
+        // Tambahkan animasi pulse
+        document.head.appendChild(
+          document.createElement("style")
+        ).textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+      });
+    </script>
+  </body>
+</html>
